@@ -23,7 +23,7 @@ export default function VendorCard({ vendor }: VendorCardProps) {
         ⭐ {vendor.rating.toFixed(1)} ({vendor.totalReviews})
       </p>
       <Link href={`/vendor/${vendor.id}`}>
-        <button className='mt-2 text-sm text-pink-600 hover:underline'>
+        <button className='mt-2 text-sm text-pink-600 hover:underline hover:cursor-pointer'>
           View Profile
         </button>
       </Link>
