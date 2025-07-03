@@ -15,8 +15,21 @@ export default function VendorProfile() {
 
   const fetchVendor = async () => {
     const res = await fetch(`/api/vendors/${id}`);
+
+    if (!res.ok) {
+      setVendor(null);
+      setLoading(false);
+      return;
+    }
+
     const data = await res.json();
-    setVendor(data);
+
+    if (data?.error) {
+      setVendor(null);
+    } else {
+      setVendor(data);
+    }
+
     setLoading(false);
   };
 
@@ -24,12 +37,31 @@ export default function VendorProfile() {
     fetchVendor();
   }, [id]);
 
-  if (loading || !vendor)
+  if (loading)
     return (
       <main className='min-h-screen text-center bg-pink-600 py-20'>
         <h1 className='text-4xl text-white font-extrabold'>Loading...</h1>
       </main>
     );
+
+  if (!vendor) {
+    return (
+      <main className='max-w-2xl mx-auto p-10 text-center'>
+        <h2 className='text-3xl font-bold text-pink-600 mb-4'>
+          Vendor Not Found
+        </h2>
+        <p className='text-gray-500 mb-6'>
+          Oops! That vendor doesn’t exist or may have been removed.
+        </p>
+        <Link
+          href='/'
+          className='inline-block bg-pink-600 text-white px-6 py-2 rounded-md hover:bg-pink-700 transition'
+        >
+          ← Back to Home
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main className='vendor-page min-h-screen p-4'>
