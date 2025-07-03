@@ -1,5 +1,7 @@
+import ReviewForm from '@/app/components/ReviewForm';
 import { PrismaClient } from '@/app/generated/prisma';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 
 const prisma = new PrismaClient();
 
@@ -17,6 +19,13 @@ export default async function VendorProfile({
 
   return (
     <main className='max-w-3xl mx-auto p-6'>
+      <Link
+        href='/'
+        className='text-sm text-pink-600 hover:underline mb-4 inline-block'
+      >
+        ← Back to Vendor Directory
+      </Link>
+
       <h1 className='text-3xl font-bold mb-2'>{vendor.name}</h1>
       <p className='text-gray-600'>
         {vendor.specialty} — {vendor.location}
@@ -41,6 +50,7 @@ export default async function VendorProfile({
       </ul>
 
       {/* Review Form */}
+      <ReviewForm vendorId={vendor.id} />
     </main>
   );
 }
