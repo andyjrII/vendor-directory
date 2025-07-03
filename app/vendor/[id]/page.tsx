@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import StarRating from '@/app/components/StarRating';
+import { FiMapPin } from 'react-icons/fi';
+import { MdVerifiedUser } from 'react-icons/md';
 
 export default function VendorProfile() {
   const { id } = useParams();
@@ -22,64 +24,89 @@ export default function VendorProfile() {
     fetchVendor();
   }, [id]);
 
-  if (loading || !vendor) return <p className='p-6'>Loading...</p>;
+  if (loading || !vendor)
+    return (
+      <main className='min-h-screen text-center bg-pink-600 py-20'>
+        <h1 className='text-4xl text-white font-extrabold'>Loading...</h1>
+      </main>
+    );
 
   return (
-    <main className='max-w-3xl mx-auto p-8 bg-white rounded-md shadow-md shadow-pink-200 my-6'>
-      <nav className='mb-4'>
-        <Link href='/' className='text-sm text-pink-600 hover:underline'>
-          ← Back to Vendor Directory
-        </Link>
-      </nav>
+    <main className='vendor-page min-h-screen p-4'>
+      <div className='max-w-4xl mx-auto px-10 py-14 bg-white rounded-md shadow-sm shadow-pink-100 my-6'>
+        <nav className='mb-4'>
+          <Link href='/' className='text-sm text-pink-600 hover:underline'>
+            ← Back to Home
+          </Link>
+        </nav>
 
-      <section className='bg-gradient-to-br from-pink-50 to-white p-6 rounded-lg shadow-md shadow-pink-200 mb-6 '>
-        <h1 className='text-4xl font-bold text-gray-800 mb-1'>{vendor.name}</h1>
-        <p className='text-gray-600 italic mb-2'>
-          {vendor.specialty} — {vendor.location}
-        </p>
-        <div className='flex items-center space-x-2 text-yellow-500 text-lg'>
-          <StarRating
-            rating={vendor.rating}
-            editable={false}
-            className='text-xl'
-          />
-          <span>{vendor.rating.toFixed(1)}</span>
-          <span className='text-gray-500 text-sm'>
-            ({vendor.totalReviews} reviews)
-          </span>
-        </div>
-      </section>
+        <section className='bg-gradient-to-bl from-pink-200 to-pink-600 p-8 mx-5 rounded-lg shadow-md shadow-pink-200 '>
+          <h1 className='text-6xl font-bold text-white mb-2 font-serif'>
+            {vendor.name}
+          </h1>
+          <p className='text-white font-bold mb-2'>{vendor.specialty}</p>
+          <p className='text-white italic mb-2 flex'>
+            <FiMapPin className='me-2 mt-0.5' /> {vendor.location}
+          </p>
+          <p
+            className={`flex mb-2 ${
+              vendor.verified ? 'text-green-500' : 'text-gray-300'
+            }`}
+          >
+            <MdVerifiedUser className='text-lg mt-0.5 me-2' />{' '}
+            {vendor.verified ? 'Verified' : 'Not Verified'}
+          </p>
+          <div className='flex items-center space-x-2 text-yellow-400 text-lg'>
+            <StarRating
+              rating={vendor.rating}
+              editable={false}
+              className='text-2xl'
+            />
+            <span className='text-xl font-semibold mt-0.5'>
+              {vendor.rating.toFixed(1)}
+            </span>
+            <span className='text-white text-sm mt-1.5'>
+              ({vendor.totalReviews} reviews)
+            </span>
+          </div>
+        </section>
 
-      <hr className='my-6 text-pink-400' />
+        <hr className='my-10 mx-5 text-pink-100' />
 
-      {/* ReviewForm appears here */}
-      <ReviewForm vendorId={vendor.id} onSubmitted={fetchVendor} />
+        <h2 className='text-2xl font-semibold text-pink-800 mb-4 mx-5'>
+          Customer Reviews
+        </h2>
 
-      <hr className='my-6 text-pink-400' />
+        {/* List of Reviews */}
+        <ul className='space-y-4 mb-6 mx-5'>
+          {vendor.reviews.length > 0 ? (
+            vendor.reviews.map((review: any) => (
+              <li className='bg-white p-5 mb-8 rounded-lg shadow-md shadow-pink-200 hover:shadow-pink-300'>
+                <span className='text-sm text-gray-400'>
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </span>
+                <div className='flex items-center space-x-1 text-yellow-500  my-2'>
+                  <StarRating
+                    rating={review.rating}
+                    editable={false}
+                    className='text-lg'
+                  />
+                </div>
+                <p className='text-lg text-gray-700'>{review.content}</p>
+              </li>
+            ))
+          ) : (
+            <p className='text-gray-500 p-5 my-8'>
+              Be the first to add a review...
+            </p>
+          )}
+        </ul>
 
-      <h2 className='text-2xl font-semibold text-gray-800 border-b border-pink-200 pb-2 mb-4'>
-        Customer Reviews
-      </h2>
+        <hr className='my-10 mx-5 text-pink-100' />
 
-      {/* List of Reviews */}
-      <ul className='space-y-4 mb-6'>
-        {vendor.reviews.map((review: any) => (
-          <li className='bg-white p-5 rounded-lg shadow-lg shadow-pink-200'>
-            <p className='text-gray-700 mb-2'>{review.content}</p>
-            <div className='flex items-center justify-between text-sm text-gray-500'>
-              <div className='flex items-center space-x-1 text-yellow-500'>
-                <span className='mt-1 me-2'>{review.rating}</span>
-                <StarRating
-                  rating={review.rating}
-                  editable={false}
-                  className='text-sm'
-                />
-              </div>
-              <span>{new Date(review.createdAt).toLocaleDateString()}</span>
-            </div>
-          </li>
-        ))}
-      </ul>
+        {/* ReviewForm */}
+        <ReviewForm vendorId={vendor.id} onSubmitted={fetchVendor} />
+      </div>
     </main>
   );
 }

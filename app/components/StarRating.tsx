@@ -6,7 +6,7 @@ export default function StarRating({
   rating,
   setRating,
   editable = false,
-  className = 'text-xl', // default for general use
+  className = 'text-xl',
 }: {
   rating: number;
   setRating?: (value: number) => void;
@@ -27,7 +27,7 @@ export default function StarRating({
     const iconClass = `${className} transition-colors duration-200 ${
       isFilled || isHalf
         ? 'text-yellow-400'
-        : 'text-gray-300 hover:text-yellow-400'
+        : 'text-gray-200 hover:text-yellow-400'
     }`;
 
     stars.push(
@@ -50,7 +50,7 @@ export default function StarRating({
   return <div className='flex space-x-1'>{stars}</div>;
 }
 
-// Helper
+// Helper Function
 function roundToHalf(num: number) {
   return Math.round(num * 2) / 2;
 }

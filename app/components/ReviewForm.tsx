@@ -42,12 +42,12 @@ export default function ReviewForm({
     <div className='relative'>
       <form
         onSubmit={handleSubmit}
-        className='bg-white border border-gray-200 rounded-lg shadow-md p-6 space-y-4 max-w-xl mx-auto'
+        className='bg-white shadow-pink-300 rounded-lg shadow-lg p-8 space-y-4 max-w-3xl mx-auto'
       >
-        <h3 className='text-2xl font-semibold text-gray-800'>Leave a Review</h3>
+        <h3 className='text-2xl font-semibold text-pink-800'>Leave a Review</h3>
 
-        <div>
-          <label className='block text-sm font-medium text-gray-700 mb-1'>
+        <div className='mb-8'>
+          <label className='block text-sm font-medium text-pink-600 mb-4'>
             Your Rating
           </label>
           <StarRating
@@ -59,14 +59,14 @@ export default function ReviewForm({
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-gray-700 mb-1'>
+          <label className='block text-sm font-medium text-pink-600 mb-4'>
             Your Feedback
           </label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder='Care to share more about it?'
-            className='w-full border border-gray-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-pink-400'
+            className='w-full border border-pink-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-pink-400'
             rows={4}
             required
           />
@@ -87,7 +87,7 @@ export default function ReviewForm({
 
       {/* Thank You Popup */}
       {showPopup && (
-        <div className='absolute top-0 left-1/2 -translate-x-1/2 mt-4 bg-green-600 text-white px-6 py-3 rounded shadow-lg z-50 animate-fadeInOut'>
+        <div className='absolute top-0 left-1/2 -translate-x-1/2 mt-4 bg-green-600 text-white text-xl px-6 py-3 rounded shadow-lg z-50 animate-fadeInOut'>
           🎉 Thank you! Your review helps others discover trusted vendors.
         </div>
       )}

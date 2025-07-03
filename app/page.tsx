@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import VendorCard from './components/VendorCard';
+import HeroSection from './components/HeroSection';
 
 type Vendor = {
   id: string | number;
@@ -30,24 +31,16 @@ export default function HomePage() {
   return (
     <main className='min-h-screen bg-pink-50 text-gray-800'>
       {/* Hero Section */}
-      <section className='bg-pink-100 text-center py-12 px-4'>
-        <h1 className='text-4xl md:text-5xl font-serif text-pink-700 mb-4'>
-          Discover Trusted Beauty Vendors 💇🏽‍♀️
-        </h1>
-        <p className='text-lg max-w-xl mx-auto text-gray-600'>
-          Explore premium hair extensions, makeup, and beauty products from
-          verified vendors across Nigeria.
-        </p>
-      </section>
+      <HeroSection />
 
       {/* Filters */}
-      <div className='max-w-6xl mx-auto p-4 flex flex-col md:flex-row md:items-center gap-4'>
+      <div className='max-w-4xl mx-auto p-6 my-6 flex flex-col md:flex-row md:items-center gap-4 bg-pink-500 rounded-xl'>
         <input
           type='text'
           placeholder='Search by location...'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className='px-4 py-2 rounded border border-gray-300 w-full md:w-1/2'
+          className='px-4 py-2 rounded border-pink-300 shadow shadow-pink-300 w-full md:w-2/3 bg-white focus:outline-none focus:ring-2 focus:ring-pink-400'
         />
         <label className='flex items-center space-x-2'>
           <input
@@ -55,12 +48,15 @@ export default function HomePage() {
             checked={onlyVerified}
             onChange={() => setOnlyVerified((prev) => !prev)}
           />
-          <span>Only show verified vendors</span>
+          <span className='text-white font-semibold'>
+            Only show verified vendors
+          </span>
         </label>
       </div>
 
       {/* Vendor Grid */}
-      <section className='max-w-6xl mx-auto p-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4'>
+
+      <section className='max-w-7xl mx-auto mb-6 p-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 transition-all duration-900'>
         {vendors
           .filter((v) =>
             v.location.toLowerCase().includes(searchTerm.toLowerCase())
