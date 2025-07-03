@@ -41,7 +41,7 @@ export default function VendorProfile() {
         </nav>
 
         <section className='bg-gradient-to-bl from-pink-200 to-pink-600 p-8 mx-5 rounded-lg shadow-md shadow-pink-200 '>
-          <h1 className='text-6xl font-bold text-white mb-2 font-serif'>
+          <h1 className='sm:text-5xl text-6xl font-bold text-white mb-2 font-serif'>
             {vendor.name}
           </h1>
           <p className='text-white font-bold mb-2'>{vendor.specialty}</p>
