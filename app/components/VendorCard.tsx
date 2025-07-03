@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import StarRating from './StarRating';
 
 type Vendor = {
   id: string | number;
@@ -20,8 +21,18 @@ export default function VendorCard({ vendor }: VendorCardProps) {
       <p className='text-sm text-gray-500'>{vendor.specialty}</p>
       <p className='text-sm'>{vendor.location}</p>
       <p className='text-yellow-500'>
-        ⭐ {vendor.rating.toFixed(1)} ({vendor.totalReviews})
+        <span className='inline-flex items-center space-x-1'>
+          <StarRating
+            rating={vendor.rating}
+            editable={false}
+            className='text-sm'
+          />
+          <span>
+            {vendor.rating.toFixed(1)} ({vendor.totalReviews})
+          </span>
+        </span>
       </p>
+
       <Link href={`/vendor/${vendor.id}`}>
         <button className='mt-2 text-sm text-pink-600 hover:underline hover:cursor-pointer'>
           View Profile

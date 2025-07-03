@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import StarRating from './StarRating';
 
 export default function ReviewForm({
   vendorId,
@@ -10,9 +11,11 @@ export default function ReviewForm({
   onSubmitted?: () => void;
 }) {
   const [content, setContent] = useState('');
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
+
+  const isFormValid = rating > 0 && content.trim() !== '';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,52 +30,67 @@ export default function ReviewForm({
     if (res.ok) {
       setContent('');
       setRating(5);
-      setSuccess(true);
+      setShowPopup(true);
       onSubmitted?.();
+      setTimeout(() => setShowPopup(false), 3000);
     }
 
     setSubmitting(false);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='mt-8 bg-white p-4 rounded shadow space-y-4'
-    >
-      <h3 className='text-lg font-semibold'>Leave a Review</h3>
-
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder='Write your review...'
-        className='w-full border rounded p-2'
-        required
-      />
-
-      <div>
-        <label className='block text-sm font-medium'>Rating</label>
-        <select
-          value={rating}
-          onChange={(e) => setRating(Number(e.target.value))}
-          className='border rounded p-2'
-        >
-          {[5, 4, 3, 2, 1].map((r) => (
-            <option key={r} value={r}>
-              {r} Star{r > 1 && 's'}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <button
-        type='submit'
-        disabled={submitting}
-        className='bg-pink-600 text-white px-4 py-2 rounded hover:bg-pink-700'
+    <div className='relative'>
+      <form
+        onSubmit={handleSubmit}
+        className='bg-white border border-gray-200 rounded-lg shadow-md p-6 space-y-4 max-w-xl mx-auto'
       >
-        {submitting ? 'Submitting...' : 'Submit Review'}
-      </button>
+        <h3 className='text-2xl font-semibold text-gray-800'>Leave a Review</h3>
 
-      {success && <p className='text-green-600 text-sm'>Review submitted!</p>}
-    </form>
+        <div>
+          <label className='block text-sm font-medium text-gray-700 mb-1'>
+            Your Rating
+          </label>
+          <StarRating
+            rating={rating}
+            setRating={setRating}
+            editable
+            className='text-6xl'
+          />
+        </div>
+
+        <div>
+          <label className='block text-sm font-medium text-gray-700 mb-1'>
+            Your Feedback
+          </label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder='Care to share more about it?'
+            className='w-full border border-gray-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-pink-400'
+            rows={4}
+            required
+          />
+        </div>
+
+        <button
+          type='submit'
+          disabled={!isFormValid || submitting}
+          className={`${
+            !isFormValid
+              ? 'bg-pink-300 cursor-not-allowed'
+              : 'bg-pink-600 hover:bg-pink-700 cursor-pointer'
+          } text-white px-6 py-2 rounded-md transition`}
+        >
+          {submitting ? 'Submitting...' : 'Publish Feedback'}
+        </button>
+      </form>
+
+      {/* Thank You Popup */}
+      {showPopup && (
+        <div className='absolute top-0 left-1/2 -translate-x-1/2 mt-4 bg-green-600 text-white px-6 py-3 rounded shadow-lg z-50 animate-fadeInOut'>
+          🎉 Thank you! Your review helps others discover trusted vendors.
+        </div>
+      )}
+    </div>
   );
 }
