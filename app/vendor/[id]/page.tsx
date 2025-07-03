@@ -1,21 +1,27 @@
+'use client';
+
 import ReviewForm from '@/app/components/ReviewForm';
-import { PrismaClient } from '@/app/generated/prisma';
-import { notFound } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-const prisma = new PrismaClient();
+export default function VendorProfile() {
+  const { id } = useParams();
+  const [vendor, setVendor] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function VendorProfile({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const vendor = await prisma.vendor.findUnique({
-    where: { id: params.id },
-    include: { reviews: true },
-  });
+  const fetchVendor = async () => {
+    const res = await fetch(`/api/vendors/${id}`);
+    const data = await res.json();
+    setVendor(data);
+    setLoading(false);
+  };
 
-  if (!vendor) return notFound();
+  useEffect(() => {
+    fetchVendor();
+  }, [id]);
+
+  if (loading || !vendor) return <p className='p-6'>Loading...</p>;
 
   return (
     <main className='max-w-3xl mx-auto p-6'>
@@ -38,7 +44,7 @@ export default async function VendorProfile({
 
       <h2 className='text-xl font-semibold mb-2'>Reviews</h2>
       <ul className='space-y-4'>
-        {vendor.reviews.map((review) => (
+        {vendor.reviews.map((review: any) => (
           <li key={review.id} className='bg-white p-4 rounded shadow'>
             <p className='text-sm text-gray-700'>{review.content}</p>
             <p className='text-yellow-500 text-sm'>⭐ {review.rating}</p>
@@ -50,7 +56,7 @@ export default async function VendorProfile({
       </ul>
 
       {/* Review Form */}
-      <ReviewForm vendorId={vendor.id} />
+      <ReviewForm vendorId={vendor.id} onSubmitted={fetchVendor} />
     </main>
   );
 }

@@ -2,7 +2,13 @@
 
 import { useState } from 'react';
 
-export default function ReviewForm({ vendorId }: { vendorId: string }) {
+export default function ReviewForm({
+  vendorId,
+  onSubmitted,
+}: {
+  vendorId: string;
+  onSubmitted?: () => void;
+}) {
   const [content, setContent] = useState('');
   const [rating, setRating] = useState(5);
   const [submitting, setSubmitting] = useState(false);
@@ -22,6 +28,7 @@ export default function ReviewForm({ vendorId }: { vendorId: string }) {
       setContent('');
       setRating(5);
       setSuccess(true);
+      onSubmitted?.();
     }
 
     setSubmitting(false);
