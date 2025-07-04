@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Beauty Vendor Directory & Review Platform
+
+Discover, rate, and connect with top-rated beauty vendors. Built with Next.js, Tailwind CSS and Prisma.
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the Repository
 
-```bash
+git clone https://github.com/yourusername/beauty-vendors.git
+cd beauty-vendors
+
+### 2. Install Dependencies
+
+npm install
+
+or
+
+yarn
+
+### 3. Configure Environment Variables
+
+Create a `.env` file and add your local database URL:
+
+DATABASE_URL="postgresql://username:password@localhost:5432/mydb?schema=public"
+
+## Database Setup
+
+### 4. Run Prisma Migration
+
+npx prisma migrate dev --name init
+
+> This will:
+>
+> - Create your database schema
+> - Run any pending migrations
+> - Generate the Prisma client
+
+### 5. Seed the Database
+
+npx prisma db seed
+
+> Make sure your `prisma/seed.ts` file is ready with mock vendors and reviews.
+
+## Running the App
+
 npm run dev
-# or
+
+or
+
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit: [http://localhost:3000]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧱 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [Next.js](https://nextjs.org/)
+- [Prisma + PostgreSQL](https://www.prisma.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Icons](https://react-icons.github.io/)
+- Client-side review system with toast + animations
 
-## Learn More
+## Useful Scripts
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+npx prisma studio # GUI to explore your database
+npx prisma generate # Regenerate Prisma client
